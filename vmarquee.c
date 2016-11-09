@@ -42,7 +42,7 @@ char str[MAX_STR_SIZE] = "This is sample text for horizontal scrolling announcem
 bool inputphase = false; // this indicate that the user is typing a new text
 char input[MAX_STR_SIZE]; // this will store the immediate user input when he/she wants to change the str[]
 bool startBigCol = true; // starts as a big column
-bool theMatrix = false;
+bool theWaterfall = false;
 
 // output the current time in milliseconds
 clock_t timems() {
@@ -124,9 +124,10 @@ void update() {
   // some little arithmetic to make the text appear in the middle of the screen
   mvaddstr(0, ncols/2 - strlen(header)/2, header);
   // we can be sure that this function won't change any global variables like most badly designed code do
-  if (theMatrix) {
+  if (theWaterfall) {
     for (int i = 0; i < ncols; i++) {
-      showvmarquee(str, line, i, ccols, 1, nrows-11, shiftval, negdir);
+      int ran = rand() % 5;
+      showvmarquee(str, line, i, ccols, 1, nrows-11, shiftval + ran, negdir);
     }
   } else {
     showvmarquee(str, line, offset, ccols, 1, nrows-11, shiftval, negdir);
@@ -143,14 +144,17 @@ void update() {
 }
 
 int main(int argc, char **argv) {
+  srand(time(NULL));
   if (argc > 1) {
     // finding options
     for (int i = 1; i < argc; i++) {
       char *option = argv[i];
-      if (strcmp(option, "-m") == 0) {
+      if (strcmp(option, "-w") == 0 || strcmp(option, "--waterfall") == 0) {
         startBigCol = false;
         negdir = false;
-        theMatrix = true;
+        theWaterfall = true;
+        strcpy(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ");
+        msdelay = 50;
       }
     }
   }
