@@ -34,7 +34,7 @@ int shiftval = 0; // decrement to move left, increment to move right
 int ccols; // current number of columns (the blue colored space), it starts maximized
 int line = 1; // current line of the text
 float msdelay = 100; // time delay between marquee transitions
-bool leftdir = true; // will move left if true or right if false
+bool negdir = true; // will move in the negative direction if true
 int offset = 0; // the column offset
 char str[MAX_STR_SIZE] = "This is sample text for horizontal scrolling announcement. | "; // the marquee string
 bool inputphase = false; // this indicate that the user is typing a new text
@@ -49,7 +49,7 @@ clock_t timems() {
 // and it also doesn't use any global variables
 // it will copy *str and show it on the screen
 // shiftval can be a really big negative/positive number
-void showmarquee(char *str, int row, int col, int colsize, int shiftval) {
+void showmarquee(char *str, int row, int col, int colsize, int shiftval, bool negdir) {
     int n = strlen(str);
     char res[colsize + 1];
     for (int i = 0; i < colsize; i++) {
@@ -66,8 +66,10 @@ void showmarquee(char *str, int row, int col, int colsize, int shiftval) {
         }
     }
     res[colsize] = 0; // null-terminated character
+    int fgcolor = negdir ? COLOR_GREEN : COLOR_RED;
+    int bgcolor = negdir ? COLOR_BLUE : COLOR_YELLOW;
     start_color();
-    init_pair(1, COLOR_WHITE, COLOR_BLUE); // set foreground and background color
+    init_pair(1, fgcolor, bgcolor); // set foreground and background color
     attron(COLOR_PAIR(1));
     mvaddstr(row, col, res);
     attroff(COLOR_PAIR(1));
@@ -101,7 +103,7 @@ void update() {
     // some little arithmetic to make the text appear in the middle of the screen
     mvaddstr(0, ncols/2 - strlen(header)/2, header);
     // we can be sure that this function won't change any global variables like most badly design code do
-    showmarquee(str, line, offset, ccols, shiftval);
+    showmarquee(str, line, offset, ccols, shiftval, negdir);
     if (inputphase) {
         mvaddstr(nrows-4, 0, "Type '=' to confirm your new input");
         mvaddstr(nrows-9, 0, ": ");
@@ -164,7 +166,7 @@ int main(void) {
                 msdelay *= 1.2;
                 update();
             } else if (btn == TOGGLE_KEY) {
-                leftdir = !leftdir;
+                negdir = !negdir;
             } else if (btn == INCREASE_COLSIZE_KEY) {
                 ccols++;
                 update();
@@ -201,7 +203,7 @@ int main(void) {
         now = timems();
         clock_t diff = now - last;
         if (diff >= msdelay) {
-            if (leftdir)
+            if (negdir)
                 shiftval--;
             else
                 shiftval++;
