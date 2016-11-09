@@ -206,6 +206,12 @@ int main(void) {
         inputphase = true;
         input[0] = 0;
         update();
+      } else if (btn == DOWNWARD_KEY) {
+        negdir = false;
+        update();
+      } else if (btn == UPWARD_KEY) {
+        negdir = true;
+        update();
       }
     }
 
