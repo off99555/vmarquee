@@ -126,7 +126,7 @@ void update() {
   // we can be sure that this function won't change any global variables like most badly designed code do
   if (theWaterfall) {
     for (int i = 0; i < ncols; i++) {
-      int ran = rand() % 5;
+      int ran = rand() % 10;
       showvmarquee(str, line, i, ccols, 1, nrows-11, shiftval + ran, negdir);
     }
   } else {
@@ -153,8 +153,8 @@ int main(int argc, char **argv) {
         startBigCol = false;
         negdir = false;
         theWaterfall = true;
-        strcpy(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ");
-        msdelay = 50;
+        strcpy(str, "========----------*******########00000WWWWWWWW          ");
+        msdelay = 35;
       }
     }
   }
