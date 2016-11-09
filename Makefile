@@ -3,3 +3,7 @@ LN=-lcurses
 
 vmarquee:	vmarquee.c
 	gcc $(CFLAGS) $< -o $@ $(LN)
+
+.PHONY:	clean
+clean:	vmarquee
+	$(RM) $^
