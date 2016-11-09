@@ -41,6 +41,8 @@ int offset = 0; // the column offset
 char str[MAX_STR_SIZE] = "This is sample text for horizontal scrolling announcement. | "; // the marquee string
 bool inputphase = false; // this indicate that the user is typing a new text
 char input[MAX_STR_SIZE]; // this will store the immediate user input when he/she wants to change the str[]
+bool startBigCol = true; // starts as a big column
+bool theMatrix = false;
 
 // output the current time in milliseconds
 clock_t timems() {
@@ -86,6 +88,10 @@ void showvmarquee(char *str, int row, int col, int colsize, int firstrow,
   attroff(COLOR_PAIR(1));
 }
 
+void resetColsize() {
+  ccols = nrows-12;
+}
+
 // redraw everything on the screen while using some global variables
 void update() {
   static int lastncols = 0; // keeps track of the last known window size
@@ -94,7 +100,11 @@ void update() {
   // trying to reset everything if the window is resized
   if (lastncols != ncols) {
     lastncols = ncols;
-    ccols = ncols;
+    if (startBigCol) {
+      ccols = ncols;
+    } else {
+      resetColsize();
+    }
     offset = 0;
   }
   clear();
@@ -114,7 +124,13 @@ void update() {
   // some little arithmetic to make the text appear in the middle of the screen
   mvaddstr(0, ncols/2 - strlen(header)/2, header);
   // we can be sure that this function won't change any global variables like most badly designed code do
-  showvmarquee(str, line, offset, ccols, 1, nrows-11, shiftval, negdir);
+  if (theMatrix) {
+    for (int i = 0; i < ncols; i++) {
+      showvmarquee(str, line, i, ccols, 1, nrows-11, shiftval, negdir);
+    }
+  } else {
+    showvmarquee(str, line, offset, ccols, 1, nrows-11, shiftval, negdir);
+  }
   if (inputphase) {
     mvaddstr(nrows-4, 0, "Type '=' to confirm your new input");
     mvaddstr(nrows-10, 0, ": ");
@@ -126,11 +142,18 @@ void update() {
   refresh();
 }
 
-void resetColsize() {
-  ccols = nrows-12;
-  update();
-}
 int main(int argc, char **argv) {
+  if (argc > 1) {
+    // finding options
+    for (int i = 1; i < argc; i++) {
+      char *option = argv[i];
+      if (strcmp(option, "-m") == 0) {
+        startBigCol = false;
+        negdir = false;
+        theMatrix = true;
+      }
+    }
+  }
   wnd = initscr();
   cbreak();
   noecho();
@@ -205,6 +228,7 @@ int main(int argc, char **argv) {
         update();
       } else if (btn == RESET_COLSIZE_KEY) {
         resetColsize();
+        update();
       } else if (btn == INPUT_KEY) {
         inputphase = true;
         input[0] = 0;
