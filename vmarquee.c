@@ -126,7 +126,11 @@ void update() {
   refresh();
 }
 
-int main(void) {
+void resetColsize() {
+  ccols = nrows-12;
+  update();
+}
+int main(int argc, char **argv) {
   wnd = initscr();
   cbreak();
   noecho();
@@ -200,8 +204,7 @@ int main(void) {
         offset = 0;
         update();
       } else if (btn == RESET_COLSIZE_KEY) {
-        ccols = nrows-12;
-        update();
+        resetColsize();
       } else if (btn == INPUT_KEY) {
         inputphase = true;
         input[0] = 0;
