@@ -28,6 +28,8 @@ char INCREASE_OFFSET_KEY = '>';
 char DECREASE_OFFSET_KEY = '<';
 char RESET_OFFSET_KEY = '0';
 char INPUT_KEY = 'e';
+char DOWNWARD_KEY = 'd';
+char UPWARD_KEY = 'u';
 
 WINDOW *wnd;
 int shiftval = 0; // decrement to move left, increment to move right
@@ -49,7 +51,7 @@ clock_t timems() {
 // and it also doesn't use any global variables
 // it will copy *str and show it on the screen
 // shiftval can be a really big negative/positive number
-void showmarquee(char *str, int row, int col, int colsize, int firstrow,
+void showvmarquee(char *str, int row, int col, int colsize, int firstrow,
     int lastrow, int shiftval, bool negdir) {
   int n = strlen(str);
   char res[colsize + 1];
@@ -105,17 +107,17 @@ void update() {
   mvaddstr(nrows-2, 0, msg);
   sprintf(msg, "Column Offset: %d / %d", offset, ncols - 1);
   mvaddstr(nrows-3, 0, msg);
-  sprintf(msg, "Keys: '%c' scrolls left, '%c' scrolls right, '%c' scrolls up, '%c' scrolls down,\n '%c' speeds up, '%c' speeds down, '%c' quit, '%c' toggle direction,\n '%c' increase column size, '%c' decrease column size, '%c' reset column size,\n '%c' increase offset, '%c' decrease offset, '%c' reset offset",
-      LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, SPEED_UP_KEY, SPEED_DOWN_KEY, QUIT_KEY, TOGGLE_KEY, INCREASE_COLSIZE_KEY, DECREASE_COLSIZE_KEY, RESET_COLSIZE_KEY, INCREASE_OFFSET_KEY, DECREASE_OFFSET_KEY, RESET_OFFSET_KEY);
-  mvaddstr(nrows-8, 0, msg);
+  sprintf(msg, "Keys: '%c' scrolls negative, '%c' scrolls positive, '%c' scrolls up, '%c' scrolls down,\n '%c' speeds up, '%c' speeds down, '%c' quit, '%c' toggle direction,\n '%c' increase column size, '%c' decrease column size, '%c' reset column size,\n '%c' increase offset, '%c' decrease offset, '%c' reset offset\n '%c' down direction, '%c' up direction",
+      LEFT_KEY, RIGHT_KEY, UP_KEY, DOWN_KEY, SPEED_UP_KEY, SPEED_DOWN_KEY, QUIT_KEY, TOGGLE_KEY, INCREASE_COLSIZE_KEY, DECREASE_COLSIZE_KEY, RESET_COLSIZE_KEY, INCREASE_OFFSET_KEY, DECREASE_OFFSET_KEY, RESET_OFFSET_KEY, DOWNWARD_KEY, UPWARD_KEY);
+  mvaddstr(nrows-9, 0, msg);
   char header[] = "== RESPONSIVE MARQUEE MANIPULATOR ==";
   // some little arithmetic to make the text appear in the middle of the screen
   mvaddstr(0, ncols/2 - strlen(header)/2, header);
   // we can be sure that this function won't change any global variables like most badly design code do
-  showmarquee(str, line, offset, ccols, 1, nrows-10, shiftval, negdir);
+  showvmarquee(str, line, offset, ccols, 1, nrows-11, shiftval, negdir);
   if (inputphase) {
     mvaddstr(nrows-4, 0, "Type '=' to confirm your new input");
-    mvaddstr(nrows-9, 0, ": ");
+    mvaddstr(nrows-10, 0, ": ");
     addstr(input);
   } else {
     sprintf(msg, "Type '%c' to start entering new input", INPUT_KEY);
