@@ -113,7 +113,7 @@ void update() {
   char header[] = "== RESPONSIVE MARQUEE MANIPULATOR ==";
   // some little arithmetic to make the text appear in the middle of the screen
   mvaddstr(0, ncols/2 - strlen(header)/2, header);
-  // we can be sure that this function won't change any global variables like most badly design code do
+  // we can be sure that this function won't change any global variables like most badly designed code do
   showvmarquee(str, line, offset, ccols, 1, nrows-11, shiftval, negdir);
   if (inputphase) {
     mvaddstr(nrows-4, 0, "Type '=' to confirm your new input");
