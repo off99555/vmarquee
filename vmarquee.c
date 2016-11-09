@@ -1,5 +1,5 @@
 /*
- * marquee.c - a program for interactive marquee manipulation
+ * vmarquee.c - a program for interactive marquee manipulation
  */
 
 #include <curses.h>
