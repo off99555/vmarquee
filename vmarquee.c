@@ -66,8 +66,8 @@ void showmarquee(char *str, int row, int col, int colsize, int shiftval, bool ne
         }
     }
     res[colsize] = 0; // null-terminated character
-    int fgcolor = negdir ? COLOR_GREEN : COLOR_RED;
-    int bgcolor = negdir ? COLOR_BLUE : COLOR_YELLOW;
+    int fgcolor = negdir ? COLOR_RED : COLOR_GREEN;
+    int bgcolor = negdir ? COLOR_YELLOW : COLOR_BLUE;
     start_color();
     init_pair(1, fgcolor, bgcolor); // set foreground and background color
     attron(COLOR_PAIR(1));
