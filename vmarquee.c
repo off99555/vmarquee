@@ -115,8 +115,6 @@ void update() {
   mvaddstr(0, ncols/2 - strlen(header)/2, header);
   // we can be sure that this function won't change any global variables like most badly designed code do
   showvmarquee(str, line, offset, ccols, 1, nrows-11, shiftval, negdir);
-  showvmarquee(str, line, offset + 20, ccols, 1, nrows-11, shiftval, negdir);
-  showvmarquee(str, line, offset + 40, ccols, 1, nrows-11, shiftval, negdir);
   if (inputphase) {
     mvaddstr(nrows-4, 0, "Type '=' to confirm your new input");
     mvaddstr(nrows-10, 0, ": ");
