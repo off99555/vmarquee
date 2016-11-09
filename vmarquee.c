@@ -27,7 +27,7 @@ char RESET_COLSIZE_KEY = '$';
 char INCREASE_OFFSET_KEY = '>';
 char DECREASE_OFFSET_KEY = '<';
 char RESET_OFFSET_KEY = '0';
-char INPUT_KEY = ':';
+char INPUT_KEY = 'e';
 
 WINDOW *wnd;
 int shiftval = 0; // decrement to move left, increment to move right
@@ -107,7 +107,8 @@ void update() {
         mvaddstr(nrows-9, 0, ": ");
         addstr(input);
     } else {
-        mvaddstr(nrows-4, 0, "Type ':' to start entering new input");
+        sprintf(msg, "Type '%c' to start entering new input", INPUT_KEY);
+        mvaddstr(nrows-4, 0, msg);
     }
     refresh();
 }
