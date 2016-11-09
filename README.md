@@ -1,8 +1,9 @@
 # vmarquee
 Vertical marquee manipulator TUI for Unix systems (built using `curses`)
 
-Please run `make` to compile the program
+1. Please run `make` to compile the program
+2. Then run `./vmarquee` to run the program
+3. Or run `make clean` to remove the compiled program
 
-Then run `./vmarquee` to run the program
-
-Or run `make clean` to remove the compiled program
+# MANUAL HELP
+Run `man ./vmarquee.1` to see instructions beautifully formatted using Groff
