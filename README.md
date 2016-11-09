@@ -5,5 +5,5 @@ Vertical marquee manipulator TUI for Unix systems (built using `curses`)
 2. Then run `./vmarquee` to run the program
 3. Or run `make clean` to remove the compiled program
 
-# MANUAL HELP
+# Manual Help
 Run `man ./vmarquee.1` to see instructions beautifully formatted using Groff
